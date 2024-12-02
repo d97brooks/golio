@@ -272,7 +272,7 @@ type Unit struct {
 	// This field was introduced in patch 9.22 with data_version 2.
 	CharacterID string `json:"character_id"`
 	// A list of the unit's items. Please refer to the Teamfight Tactics documentation for item ids.
-	Items []int `json:"itemNames"`
+	Items []string `json:"itemNames"`
 	// If a unit is chosen as part of the Fates set mechanic, the chosen trait will be indicated by this field. Otherwise this field is excluded from the response.
 	Chosen string `json:"chosen"`
 	Name   string `json:"name"`
