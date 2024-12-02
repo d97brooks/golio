@@ -6,7 +6,6 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/d97brooks/golio/api"
 	"github.com/d97brooks/golio/internal"
 )
 
@@ -51,10 +50,8 @@ func (mo *MatchListOptions) buildParam() string {
 // Get returns a match specified by its ID
 func (m *MatchClient) Get(id string) (*Match, error) {
 	logger := m.logger().WithField("method", "Get")
-	c := *m.c                                          // copy client
-	c.Region = api.Region(api.RegionToRoute[c.Region]) // Match v5 uses a route instead of a region
 	var match *Match
-	if err := c.GetInto(fmt.Sprintf(endpointGetMatch, id), &match); err != nil {
+	if err := m.c.GetInto(fmt.Sprintf(endpointGetMatch, id), &match); err != nil {
 		logger.Debug(err)
 		return nil, err
 	}
@@ -66,14 +63,12 @@ func (m *MatchClient) List(puuid string, start, count int, options ...*MatchList
 	[]string, error,
 ) {
 	logger := m.logger().WithField("method", "List")
-	c := *m.c                                          // copy client
-	c.Region = api.Region(api.RegionToRoute[c.Region]) // Match v5 uses a route instead of a region
 	var matches []string
 	endpoint := fmt.Sprintf(endpointGetMatchIDs, puuid, start, count)
 	if len(options) != 0 {
 		endpoint += options[0].buildParam()
 	}
-	if err := c.GetInto(endpoint, &matches); err != nil {
+	if err := m.c.GetInto(endpoint, &matches); err != nil {
 		logger.Debug(err)
 		return nil, err
 	}

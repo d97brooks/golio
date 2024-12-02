@@ -2,7 +2,7 @@ package tft
 
 import (
 	"fmt"
-	"github.com/d97brooks/golio/api"
+
 	"github.com/d97brooks/golio/internal"
 	log "github.com/sirupsen/logrus"
 )
@@ -15,7 +15,6 @@ type MatchClient struct {
 // GetMatchesByPUUID returns a list of match ids by PUUID
 func (mc *MatchClient) GetMatchesByPUUID(puuid string) ([]string, error) {
 	logger := mc.logger().WithField("method", "GetMatchesByPUUID")
-	mc.c.Region = api.Region(api.RegionToRoute[mc.c.Region])
 	url := fmt.Sprintf(endpointMatchesByPUUID, puuid)
 	var out []string
 	if err := mc.c.GetInto(url, &out); err != nil {
@@ -28,7 +27,6 @@ func (mc *MatchClient) GetMatchesByPUUID(puuid string) ([]string, error) {
 // GetMatchByMatchID returns a match by matchID
 func (mc *MatchClient) GetMatchByMatchID(matchId string) (*Match, error) {
 	logger := mc.logger().WithField("method", "GetMatchByMatchID")
-	mc.c.Region = api.Region(api.RegionToRoute[mc.c.Region])
 	url := fmt.Sprintf(endpointMatchByMatchID, matchId)
 	var out *Match
 	if err := mc.c.GetInto(url, &out); err != nil {

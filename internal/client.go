@@ -3,6 +3,7 @@ package internal
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -24,7 +25,7 @@ const (
 // Client provides methods for communication with the Riot API.
 type Client struct {
 	L      log.FieldLogger
-	Region api.Region
+	region api.Region
 	APIKey string
 	Client Doer
 }
@@ -33,7 +34,7 @@ type Client struct {
 func NewClient(region api.Region, key string, client Doer, logger log.FieldLogger) *Client {
 	return &Client{
 		L:      logger,
-		Region: region,
+		region: region,
 		APIKey: key,
 		Client: client,
 	}
@@ -172,13 +173,21 @@ func (c *Client) DoRequest(method, endpoint string, body io.Reader, reqOptions [
 
 // NewRequest returns a new http.Request with necessary headers et.
 func (c *Client) NewRequest(method, endpoint string, body io.Reader, reqOptions ...RequestOption) (*http.Request, error) {
+	route := api.RegionToRoute[c.region]
+	if route == "" {
+		return nil, errors.New("error deriving route: invalid region configuration")
+	}
+
+	url := fmt.Sprintf(apiURLFormat, scheme, route, baseURL, endpoint)
+	
 	logger := c.Logger().WithFields(
 		log.Fields{
 			"method":   "NewRequest",
-			"endpoint": endpoint,
+			"url": url,
 		},
 	)
-	request, err := http.NewRequest(method, fmt.Sprintf(apiURLFormat, scheme, c.Region, baseURL, endpoint), body)
+
+	request, err := http.NewRequest(method, url, body)
 	if err != nil {
 		logger.Debug(err)
 		return nil, err
@@ -193,5 +202,9 @@ func (c *Client) NewRequest(method, endpoint string, body io.Reader, reqOptions 
 
 // Logger returns a logger with client specific fields set.
 func (c *Client) Logger() log.FieldLogger {
-	return c.L.WithField("region", c.Region)
+	return c.L.WithField("region", c.region)
+}
+
+func (c *Client) Region() api.Region {
+	return c.region
 }

@@ -572,7 +572,7 @@ type GameInfo struct {
 
 // GetMatch returns information about the finished match
 func (i *GameInfo) GetMatch(client *Client) (*Match, error) {
-	return client.Match.Get(fmt.Sprintf("%v_%v", strings.ToUpper(string(client.Match.c.Region)), i.GameID))
+	return client.Match.Get(fmt.Sprintf("%v_%v", strings.ToUpper(string(client.Match.c.Region())), i.GameID))
 }
 
 // BannedChampion represents a champion ban during pack/ban phase
