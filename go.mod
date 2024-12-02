@@ -1,4 +1,4 @@
-module github.com/KnutZuidema/golio
+module github.com/d97brooks/golio
 
 go 1.20
 

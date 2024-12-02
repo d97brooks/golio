@@ -5,7 +5,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/KnutZuidema/golio/internal"
+	"github.com/d97brooks/golio/internal"
 )
 
 // RankedClient provides methods for the ranked endpoints of the VALORANT API.

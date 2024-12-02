@@ -13,8 +13,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/KnutZuidema/golio/api"
-	"github.com/KnutZuidema/golio/internal"
+	"github.com/d97brooks/golio/api"
+	"github.com/d97brooks/golio/internal"
 )
 
 const (

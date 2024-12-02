@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/KnutZuidema/golio/datadragon"
-	"github.com/KnutZuidema/golio/static"
+	"github.com/d97brooks/golio/datadragon"
+	"github.com/d97brooks/golio/static"
 )
 
 // ChampionInfo contains information about the free champion rotation
